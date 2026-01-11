@@ -1,20 +1,22 @@
-FROM node:18-slim
+FROM node:16-slim
 
 WORKDIR /usr/src/app
 
+# Copiar apenas os arquivos necessários do servidor
 COPY package*.json ./
-RUN npm install --loglevel=error
+COPY server.js ./
+COPY index.js ./
+COPY lib/ ./lib/
+COPY api/ ./api/
+COPY config/ ./config/
+COPY database/ ./database/
 
-COPY client/package*.json ./client/
-RUN cd client && npm install --loglevel=error
+# Instalar dependências do servidor
+RUN npm install --production --loglevel=error
 
-COPY . .
-
-RUN cd client && REACT_APP_API_URL=http://localhost:3001 SKIP_PREFLIGHT_CHECK=true npm run build
-
-RUN mv client/build build
-RUN rm -rf client/*
-RUN mv build client/
+# Criar pasta client vazia (sem build do React por enquanto)
+RUN mkdir -p client
+COPY client/build/ ./client/ 2>/dev/null || echo "No client build found, creating empty client folder"
 
 EXPOSE 8080
 
