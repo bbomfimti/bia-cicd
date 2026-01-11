@@ -5,10 +5,12 @@ phases:
     commands:
       - echo Fazendo login no ECR...
       - aws --version
+      - AWS_DEFAULT_REGION=us-east-2
+      - AWS_ACCOUNT_ID=277519277676
       - echo $AWS_DEFAULT_REGION
       - echo $AWS_ACCOUNT_ID
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/bia
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 277519277676.dkr.ecr.us-east-2.amazonaws.com
+      - REPOSITORY_URI=277519277676.dkr.ecr.us-east-2.amazonaws.com/bia
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
