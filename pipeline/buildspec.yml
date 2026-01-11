@@ -24,4 +24,7 @@ phases:
       - echo Gerando artefato da imagem para o ECS
       - printf '[{"name":"bia","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - codebuild-breakpoint
-  files: imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
